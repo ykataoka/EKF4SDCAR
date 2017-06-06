@@ -13,12 +13,29 @@ This project involves the Term 2 Simulator which can be downloaded
 
 The accuracy with the dataset 1 should results in 
 
-    state    |	  rmse
-:-----------:|:------------:
-position_x   |    0.098
-position_y   |    0.086
-velocity_x   |    0.448
-velocity_y   |    0.433
+|    state    |	  rmse      |
+|:-----------:|:-----------:|
+|position_x   |    0.098    |
+|position_y   |    0.086    |
+|velocity_x   |    0.448    |
+|velocity_y   |    0.433    |
+
+
+The first measurements is used to initialize the state vectors and covariance matrices.
+The state of position is initialized in either LIDAR or RADAR case.
+For RADAR case, the state needs to be converted to cartesian from polar coordinates.
+ - px = rho * sin(phi)
+ - py = rho * cos(phi)
+ - vx = rho_dot sin(phi) + rho cos(phi) phi_dot
+ - vy = rho_dot cos(phi) - rho sin(phi) phi_dot
+Since the phi_dot is not directly observed, updating vx and vy is skipped.
+
+Kalman Filter algorithm first predicts object position to the current
+timestep and them update the prediction using the new measurement.
+LIDAR and RADAR respectively measure sensor data. Depending on the
+sensor data, this program take different kalman fileter approach. When
+LIDAR is measured, standard kalman filter is applied. When RADAR is
+measured, extended kalman filter is applied.
 
 
 
